@@ -3,6 +3,7 @@ body {
   font-family: 'Avenir Next', sans-serif;
   color: white;
   overflow: hidden;
+  margin: 0;
 }
 
 h1 {
@@ -16,9 +17,15 @@ h1 {
   font-size: 8vw;
   margin: 0;
   line-height: 1;
+  -webkit-user-select: none; /* Safari */
+  -ms-user-select: none; /* IE 10 and IE 11 */
+  user-select: none; /* Standard syntax */
+  display: none;
 }
+
 
 canvas {
   display: block;
   margin: 0 auto;
+  border: 1px solid white;
 }
