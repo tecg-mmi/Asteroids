@@ -5,7 +5,17 @@ export const settings = {
         id: 'game',
     },
     ship: {
-        color: Rgb.white, width: 20, height: 40,
-
+        color: Rgb.white,
+        width: 20,
+        height: 40,
+        speed: 0.2,
+        maxSpeed: 5,
+        velocity: {x: 1, y: 2.5}
     },
+    keys: {
+        'ArrowUp': -1,
+        'ArrowRight': Math.PI / 15,
+        'ArrowLeft': -Math.PI / 15,
+        'ArrowDown': 1
+    }
 }
