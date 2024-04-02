@@ -6,7 +6,7 @@ export class KeyController {
     constructor() {
         this.activeKeys = [];
         document.addEventListener('keydown', (e) => {
-            if (Object.keys(settings.keys).includes(e.key) && !this.activeKeys.includes(e.key)) {
+            if (settings.keys.includes(e.key) && !this.activeKeys.includes(e.key)) {
                 this.activeKeys.push(e.key);
             }
         })

@@ -10,12 +10,13 @@ export const settings = {
         height: 40,
         speed: 0.2,
         maxSpeed: 5,
-        velocity: {x: 1, y: 2.5}
+        velocity: {x: 1, y: 2.5},
+        leftRotation: -Math.PI / 15,
+        right: Math.PI / 15,
     },
-    keys: {
-        'ArrowUp': -1,
-        'ArrowRight': Math.PI / 15,
-        'ArrowLeft': -Math.PI / 15,
-        'ArrowDown': 1
-    }
+    keys: ['ArrowUp',
+        'ArrowRight',
+        'ArrowLeft',
+        'ArrowDown']
+
 }

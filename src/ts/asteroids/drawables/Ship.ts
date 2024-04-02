@@ -23,15 +23,16 @@ export class Ship extends Triangle implements IAnimatable {
     }
 
     update() {
-        this.keyControl.activeKeys.forEach((value, key) => {
+        console.log(this.keyControl.activeKeys)
+        this.keyControl.activeKeys.forEach((value) => {
             if (value === 'ArrowUp') {
                 this.speed.add(Vector.fromAngle(this.degree, settings.ship.speed));
             } else if (value === 'ArrowDown') {
                 this.speed.multiply(0.99);
             } else if (value === 'ArrowLeft') {
-                this.degree += settings.keys['ArrowLeft'];
+                this.degree += settings.ship.leftRotation;
             } else if (value === 'ArrowRight') {
-                this.degree += settings.keys['ArrowRight'];
+                this.degree += settings.ship.leftRotation;
             }
         });
         this.speed.multiply(0.99);
