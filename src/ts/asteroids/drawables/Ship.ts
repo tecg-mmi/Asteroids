@@ -41,16 +41,16 @@ export class Ship extends Triangle implements IAnimatable {
 
     checkEdges() {
         if (this.position.y > this.canvas.height + settings.ship.height) {
-            this.position.y = -settings.ship.height
+            this.position.y = -settings.ship.height;
         }
         if (this.position.y < -settings.ship.height) {
-            this.position.y = this.canvas.height + settings.ship.height
+            this.position.y = this.canvas.height + settings.ship.height;
         }
-        if (this.position.x > this.canvas.width + settings.ship.height) {
-            this.position.x = -settings.ship.height
+        if (this.position.x > this.canvas.width + settings.ship.width) {
+            this.position.x = -settings.ship.width;
         }
-        if (this.position.x < -settings.ship.height) {
-            this.position.x = this.canvas.width + settings.ship.height
+        if (this.position.x < -settings.ship.width) {
+            this.position.x = this.canvas.width + settings.ship.width;
         }
     }
 }
