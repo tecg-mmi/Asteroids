@@ -29,22 +29,27 @@ export class Ship extends Triangle implements IAnimatable {
 
     update() {
         this.keyControl.activeKeys.forEach((value) => {
-            console.log(this.keyControl.activeKeys);
-            if (value === 'ArrowUp') {
-                this.speed.add(Vector.fromAngle(this.degree, settings.ship.speed));
-            } else if (value === 'ArrowDown') {
-                this.speed.multiply(0.99);
-            } else if (value === 'ArrowLeft') {
-                this.degree += settings.ship.left;
-            } else if (value === 'ArrowRight') {
-                this.degree += settings.ship.right;
-            } else if (value === ' ') {
-                this.bulletTimer++;
-                if (this.bulletTimer > 10) {
-                    this.bulletTimer = 0;
-                    this.fireBullet();
-                }
-
+            switch (value) {
+                case 'ArrowUp':
+                    this.speed.add(Vector.fromAngle(this.degree, settings.ship.speed));
+                    break;
+                case 'ArrowDown':
+                    this.speed.multiply(0.99);
+                    break;
+                case 'ArrowLeft':
+                    this.degree += settings.ship.left;
+                    break;
+                case 'ArrowRight':
+                    this.degree += settings.ship.right;
+                    break;
+                case ' ':
+                    this.bulletTimer++;
+                    if (this.bulletTimer > 10) {
+                        this.bulletTimer = 0;
+                        this.fireBullet();
+                        console.log(this.bullets.length)
+                    }
+                    break;
             }
         });
         this.speed.multiply(0.99);
@@ -79,8 +84,15 @@ export class Ship extends Triangle implements IAnimatable {
         });
     }
 
+    clear() {
+        super.clear();
+        this.bullets.forEach((bullet) => {
+            bullet.clear();
+        });
+    }
+
     private fireBullet() {
-        //this.bullets.push(new Bullet(this.ctx, Rgb.white, new Vector(this.position), settings.bullet.radius, this.degree, this.speed));
+        this.bullets.push(new Bullet(this.ctx,new Vector(this.position), settings.bullet.radius, this.degree, this.speed));
     }
 
     center() {

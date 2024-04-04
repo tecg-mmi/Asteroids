@@ -3,6 +3,8 @@ import {Animate} from "../framework/Animate";
 import {KeyController} from "./KeyController";
 import {settings} from "./settings";
 import {IGameStatus} from "../framework/types/IGameStatus";
+import {Circle} from "../framework/shapes/Circle";
+import {Rgb} from "../framework/colors/Rgb";
 
 export class Game {
     private readonly canvas: HTMLCanvasElement;

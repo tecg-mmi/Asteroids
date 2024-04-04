@@ -21,7 +21,9 @@ export const settings = {
         ' '
     ],
     bullet: {
-        radius: 2,
+        color: Rgb.white,
+        radius: 2, length: 10
+
     },
     h1: {
         selector: '.header',

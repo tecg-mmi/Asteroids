@@ -5,13 +5,11 @@ import {IPosition} from "../types/iPosition";
 export class Triangle extends Shape {
     protected readonly width: number;
     protected readonly height: number;
-    protected degree: number;
 
     constructor(ctx: CanvasRenderingContext2D, position:IPosition, width: number, height: number, color: IColor, degree: number = 0, isFilled: boolean = true) {
-        super(ctx, color, position, isFilled);
+        super(ctx, color, position,degree, isFilled);
         this.width = Math.trunc(width)
         this.height = Math.trunc(height);
-        this.degree = degree;
     }
 
     public draw() {
@@ -23,8 +21,6 @@ export class Triangle extends Shape {
         this.ctx.lineTo(-this.width / 2, this.height / 2);
         this.ctx.lineTo(this.width / 2, this.height / 2);
         this.ctx.closePath();
-        this.ctx.fillStyle = this.color.toString();
-        this.ctx.strokeStyle = this.color.toString();
         this.fillOrStroke();
         this.ctx.restore();
     }
