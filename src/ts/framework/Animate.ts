@@ -11,10 +11,14 @@ import {IAnimatable} from "./types/IAnimatable";
  */
 export class Animate {
     private iAnimates: IAnimatable[];
+    private canvas: HTMLCanvasElement;
+    private ctx: CanvasRenderingContext2D;
 
 
-    constructor() {
+    constructor(canvas?: HTMLCanvasElement, ctx?: CanvasRenderingContext2D) {
         this.iAnimates = [];
+        this.canvas = canvas;
+        this.ctx = ctx;
     }
 
 
@@ -30,7 +34,11 @@ export class Animate {
 
     private animate() {
         this.iAnimates.forEach((animate) => {
-            animate.clear();
+            if (this.ctx === undefined || this.canvas === undefined) {
+                this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+            } else {
+                animate.clear();
+            }
             animate.update();
             animate.draw();
         });

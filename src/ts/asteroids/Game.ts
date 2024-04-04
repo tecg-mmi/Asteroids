@@ -22,7 +22,7 @@ export class Game {
         this.ctx = this.canvas.getContext('2d');
         this.keyControl = new KeyController(this.gameStatus, this.hideHeader.bind(this));
         this.ship = new Ship(this.ctx, this.canvas, this.keyControl);
-        this.animation = new Animate();
+        this.animation = new Animate(this.canvas, this.ctx);
         this.animation.registerForAnimation(this.ship);
         this.ship.draw();
         this.animation.start();

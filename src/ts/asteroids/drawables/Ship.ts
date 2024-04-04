@@ -47,7 +47,6 @@ export class Ship extends Triangle implements IAnimatable {
                     if (this.bulletTimer > 10) {
                         this.bulletTimer = 0;
                         this.fireBullet();
-                        console.log(this.bullets.length)
                     }
                     break;
             }
