@@ -35,9 +35,9 @@ export class Animate {
     private animate() {
         this.iAnimates.forEach((animate) => {
             if (this.ctx === undefined || this.canvas === undefined) {
-                this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
-            } else {
                 animate.clear();
+            } else {
+                this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
             }
             animate.update();
             animate.draw();
