@@ -8,8 +8,8 @@ export class Bullet extends Circle implements IAnimatable {
     private readonly speed: Vector;
     private readonly acceleration: Vector;
 
-    constructor(ctx: CanvasRenderingContext2D, position: IPosition, radius: number, degree: number, speed: Vector) {
-        super(ctx, settings.bullet.color, new Vector(position), degree, radius);
+    constructor(ctx: CanvasRenderingContext2D, position: IPosition, degree: number, speed: Vector) {
+        super(ctx, settings.bullet.color, new Vector(position), degree, settings.bullet.radius, true);
         this.speed = new Vector(speed);
         this.acceleration = Vector.fromAngle(this.degree, settings.bullet.length);
         this.speed.add(this.acceleration);

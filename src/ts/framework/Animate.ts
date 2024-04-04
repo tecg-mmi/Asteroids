@@ -10,9 +10,9 @@ import {IAnimatable} from "./types/IAnimatable";
  * @interface GameStatus
  */
 export class Animate {
-    private iAnimates: IAnimatable[];
-    private canvas: HTMLCanvasElement;
-    private ctx: CanvasRenderingContext2D;
+    private readonly iAnimates: IAnimatable[];
+    private readonly canvas: HTMLCanvasElement;
+    private readonly ctx: CanvasRenderingContext2D;
 
 
     constructor(canvas?: HTMLCanvasElement, ctx?: CanvasRenderingContext2D) {

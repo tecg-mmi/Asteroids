@@ -7,9 +7,8 @@ import {Vector} from "../../framework/Vector";
 import {Bullet} from "./Bullet";
 
 export class Ship extends Triangle implements IAnimatable {
-    private canvas: HTMLCanvasElement;
-    private speed: Vector;
-    private acceleration: Vector;
+    private readonly canvas: HTMLCanvasElement;
+    private readonly speed: Vector;
     public keyControl: KeyController;
     private bulletTimer: number;
     private bullets: Bullet[];
@@ -21,7 +20,6 @@ export class Ship extends Triangle implements IAnimatable {
         }), settings.ship.width, settings.ship.height, Rgb.white, 0, false);
         this.canvas = canvas;
         this.speed = new Vector({x: 0, y: 0});
-        this.acceleration = new Vector({x: 0.05, y: 0.05});
         this.keyControl = keyControl;
         this.bulletTimer = 0;
         this.bullets = [];
@@ -91,7 +89,8 @@ export class Ship extends Triangle implements IAnimatable {
     }
 
     private fireBullet() {
-        this.bullets.push(new Bullet(this.ctx,new Vector(this.position), settings.bullet.radius, this.degree, this.speed));
+        this.bullets.push(new Bullet(
+            this.ctx, new Vector(this.position), this.degree, this.speed));
     }
 
     center() {
