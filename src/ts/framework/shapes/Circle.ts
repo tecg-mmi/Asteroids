@@ -24,10 +24,10 @@ export class Circle extends Shape {
         this.ctx.translate(this.position.x, this.position.y);
         this.ctx.rotate(this.degree);
         if (this.isFilled) {
-            this.ctx.clearRect(this.position.x - this.radius, this.position.y - this.radius, this.radius * 2, this.radius * 2);
+            this.ctx.clearRect(-this.radius-1, -this.radius-1, this.radius * 2 +2, this.radius * 2 +2);
         } else {
             // use stroke width to clear the circle
-            this.ctx.clearRect(this.position.x - this.radius - 1, this.position.y - this.radius - 1, this.radius * 2 + 2, this.radius * 2 + 2);
+            this.ctx.clearRect(-this.radius - 1, -this.radius - 1, this.radius * 2 + 2, this.radius * 2 + 2);
 
         }
         this.ctx.restore();
