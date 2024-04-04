@@ -11,12 +11,21 @@ export const settings = {
         speed: 0.2,
         maxSpeed: 5,
         velocity: {x: 1, y: 2.5},
-        leftRotation: -Math.PI / 15,
+        left: -Math.PI / 15,
         right: Math.PI / 15,
     },
     keys: ['ArrowUp',
         'ArrowRight',
         'ArrowLeft',
-        'ArrowDown']
+        'ArrowDown',
+        ' '
+    ],
+    bullet: {
+        radius: 2,
+    },
+    h1: {
+        selector: '.header',
+        hideClass: 'hidden',
+    }
 
 }
