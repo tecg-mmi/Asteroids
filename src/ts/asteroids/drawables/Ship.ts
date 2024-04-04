@@ -11,7 +11,8 @@ export class Ship extends Triangle implements IAnimatable {
     private readonly speed: Vector;
     public keyControl: KeyController;
     private bulletTimer: number;
-    private bullets: Bullet[];
+    private bullets: Bullet[] = [];
+    private bulletsToRemoves: number[] = [];
 
     constructor(ctx: CanvasRenderingContext2D, canvas: HTMLCanvasElement, keyControl: KeyController) {
         super(ctx, new Vector({
@@ -22,7 +23,6 @@ export class Ship extends Triangle implements IAnimatable {
         this.speed = new Vector({x: 0, y: 0});
         this.keyControl = keyControl;
         this.bulletTimer = 0;
-        this.bullets = [];
     }
 
     update() {
@@ -52,10 +52,21 @@ export class Ship extends Triangle implements IAnimatable {
         this.speed.multiply(0.99);
         (this.position as Vector).add(this.speed);
         this.checkEdges();
-        this.bullets.forEach((bullet) => {
+        this.bullets.forEach((bullet, idx) => {
+            if (bullet.isOutOfBounds()) {
+                this.bulletsToRemoves.push(idx);
+            }
             bullet.update();
         });
+        this.removeOutOfBouceBullet();
 
+    }
+
+    private removeOutOfBouceBullet() {
+        this.bulletsToRemoves.forEach((idx) => {
+            this.bullets.splice(idx, 1);
+        });
+        this.bulletsToRemoves = [];
     }
 
     checkEdges() {
@@ -90,7 +101,7 @@ export class Ship extends Triangle implements IAnimatable {
 
     private fireBullet() {
         this.bullets.push(new Bullet(
-            this.ctx, new Vector(this.position), this.degree, this.speed));
+            this.ctx, this.canvas, new Vector(this.position), this.degree, this.speed));
     }
 
     center() {

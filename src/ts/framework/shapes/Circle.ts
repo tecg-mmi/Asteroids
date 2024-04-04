@@ -3,7 +3,7 @@ import {IColor} from "../types/IColor";
 import {IPosition} from "../types/iPosition";
 
 export class Circle extends Shape {
-    private readonly radius: number;
+    protected readonly radius: number;
 
 
     constructor(ctx: CanvasRenderingContext2D, color: IColor, position: IPosition, degree: number, radius: number, isFilled: boolean = true) {
