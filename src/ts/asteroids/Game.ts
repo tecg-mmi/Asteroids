@@ -12,20 +12,21 @@ export class Game {
     private readonly ship: Ship;
     private readonly keyControl: KeyController;
     private header: HTMLElement;
-    private gameStatus: IGameStatus = {isStarted: false};
+    private gameStatus: IGameStatus;
     private asteroids: Asteroid[] = [];
 
     constructor() {
+        this.gameStatus = {isStarted: false, isOver: false, score: 0, lives: 3};
         this.header = document.querySelector(settings.h1.selector);
         this.canvas = document.getElementById('game') as HTMLCanvasElement;
         this.resizeCanvas();
         this.ctx = this.canvas.getContext('2d');
         this.keyControl = new KeyController(this.gameStatus, this.hideHeader.bind(this));
         this.animation = new Animate(this.canvas, this.ctx);
-        this.ship = new Ship(this.ctx, this.canvas, this.keyControl,this.animation);
+        this.ship = new Ship(this.ctx, this.canvas, this.keyControl, this.animation);
         this.animation.registerForAnimation(this.ship);
         for (let i = 0; i < settings.asteroid.initialCount; i++) {
-            this.asteroids.push(new Asteroid(this.ctx, this.canvas,this.animation));
+            this.asteroids.push(new Asteroid(this.ctx, this.canvas, this.ship, this.gameStatus, this.animation));
             this.asteroids[i].draw();
             this.animation.registerForAnimation(this.asteroids[i]);
         }
