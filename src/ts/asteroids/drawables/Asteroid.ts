@@ -92,4 +92,16 @@ export class Asteroid extends Circle implements IAnimatable {
             }
         });
     }
+
+    private checkCollisionWithShip() {
+        this.ctx.save();
+        this.ship.points.forEach((point) => {
+            if (this.ctx.isPointInPath(this.path, this.ship.position.x - point.x - this.position.x, this.ship.position.y - point.y - this.position.y)) {
+                console.log('collision with ship');
+                this.animation.stop();
+                this.gameStatus.lives--;
+            }
+        });
+        this.ctx.restore();
+    }
 }
