@@ -9,19 +9,22 @@ export class Vector implements IPosition {
         this.y = position.y;
     }
 
-    add(v: IPosition) {
+    add(v: IPosition): Vector {
         this.x += v.x;
         this.y += v.y;
+        return this;
     }
 
-    subtract(v: Vector) {
+    subtract(v: Vector): Vector {
         this.x -= v.x;
         this.y -= v.y;
+        return this;
     }
 
-    multiply(scalar: number) {
+    multiply(scalar: number): Vector {
         this.x *= scalar;
         this.y *= scalar;
+        return this;
     }
 
     static fromAngle(angle: number, length: number) {
