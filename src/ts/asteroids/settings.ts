@@ -58,8 +58,8 @@ export const settings = {
         },
         newAsteroidsCount: 2,
         rotationSpeed: {
-            min: Math.PI / 30,
-            max: Math.PI / 15
+            min: Math.PI / -300,
+            max: Math.PI / 300
         }
 
     }
