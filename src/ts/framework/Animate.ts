@@ -5,6 +5,7 @@ export class Animate {
     private readonly canvas: HTMLCanvasElement;
     private readonly ctx: CanvasRenderingContext2D;
     private readonly idxToClear: number[] = [];
+    private registerForAnimationId: number;
 
     constructor(canvas?: HTMLCanvasElement, ctx?: CanvasRenderingContext2D) {
         this.iAnimates = [] = [];
@@ -17,6 +18,10 @@ export class Animate {
         this.animate()
     }
 
+    public stop() {
+        cancelAnimationFrame(this.registerForAnimationId);
+    }
+
 
     public registerForAnimation(animated: IAnimatable) {
         this.iAnimates.push(animated);
@@ -24,7 +29,7 @@ export class Animate {
 
 
     private animate() {
-        requestAnimationFrame(this.animate.bind(this));
+        this.registerForAnimationId = requestAnimationFrame(this.animate.bind(this));
         if (!(this.ctx === undefined || this.canvas === undefined)) {
             this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
         }
