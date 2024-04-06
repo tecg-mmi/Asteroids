@@ -5,20 +5,22 @@ import {IAnimatable} from "../../framework/types/IAnimatable";
 import {KeyController} from "../KeyController";
 import {Vector} from "../../framework/Vector";
 import {Bullet} from "./Bullet";
+import {Animate} from "../../framework/Animate";
 
 export class Ship extends Triangle implements IAnimatable {
     private readonly canvas: HTMLCanvasElement;
     private readonly speed: Vector;
     public keyControl: KeyController;
     private bulletTimer: number;
-    private bullets: Bullet[] = [];
-    private bulletsToRemoves: number[] = [];
+    shouldBeRemove: boolean = false;
+    private animation: Animate;
 
-    constructor(ctx: CanvasRenderingContext2D, canvas: HTMLCanvasElement, keyControl: KeyController) {
+    constructor(ctx: CanvasRenderingContext2D, canvas: HTMLCanvasElement, keyControl: KeyController, animation: Animate) {
         super(ctx, new Vector({
             x: canvas.width / 2,
             y: canvas.height / 2
         }), settings.ship.width, settings.ship.height, Rgb.white, 0, false);
+        this.animation = animation;
         this.canvas = canvas;
         this.speed = new Vector({x: 0, y: 0});
         this.keyControl = keyControl;
@@ -26,6 +28,14 @@ export class Ship extends Triangle implements IAnimatable {
     }
 
     update() {
+        this.handleKey();
+        this.speed.multiply(settings.ship.friction);
+        (this.position as Vector).add(this.speed);
+        this.checkEdges();
+
+    }
+
+    private handleKey() {
         this.keyControl.activeKeys.forEach((value) => {
             switch (value) {
                 case 'ArrowUp':
@@ -49,24 +59,6 @@ export class Ship extends Triangle implements IAnimatable {
                     break;
             }
         });
-        this.speed.multiply(0.99);
-        (this.position as Vector).add(this.speed);
-        this.checkEdges();
-        this.bullets.forEach((bullet, idx) => {
-            if (bullet.isOutOfBounds()) {
-                this.bulletsToRemoves.push(idx);
-            }
-            bullet.update();
-        });
-        this.removeOutOfBouceBullet();
-
-    }
-
-    private removeOutOfBouceBullet() {
-        this.bulletsToRemoves.forEach((idx) => {
-            this.bullets.splice(idx, 1);
-        });
-        this.bulletsToRemoves = [];
     }
 
     checkEdges() {
@@ -87,21 +79,17 @@ export class Ship extends Triangle implements IAnimatable {
 
     draw() {
         super.draw();
-        this.bullets.forEach((bullet) => {
-            bullet.draw();
-        });
     }
 
     clear() {
         super.clear();
-        this.bullets.forEach((bullet) => {
-            bullet.clear();
-        });
     }
 
     private fireBullet() {
-        this.bullets.push(new Bullet(
-            this.ctx, this.canvas, new Vector(this.position), this.degree, this.speed));
+        const position = new Vector(this.position);
+        position.add(Vector.fromAngle(this.degree, settings.ship.height / 2));
+        this.animation.registerForAnimation(new Bullet(
+            this.ctx, this.canvas, position, this.degree, this.speed));
     }
 
     center() {

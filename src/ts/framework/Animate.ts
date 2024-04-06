@@ -1,22 +1,13 @@
 import {IAnimatable} from "./types/IAnimatable";
 
-/**
- * Manages the animation loop for animatable objects.
- *
- * @param animated - The array of animatable objects.
- * @interface Animatable
- *
- * @param gameStatus - The game status object that controls the animation loop.
- * @interface GameStatus
- */
 export class Animate {
-    private readonly iAnimates: IAnimatable[];
+    public readonly iAnimates: IAnimatable[];
     private readonly canvas: HTMLCanvasElement;
     private readonly ctx: CanvasRenderingContext2D;
-
+    private readonly idxToClear: number[] = [];
 
     constructor(canvas?: HTMLCanvasElement, ctx?: CanvasRenderingContext2D) {
-        this.iAnimates = [];
+        this.iAnimates = [] = [];
         this.canvas = canvas;
         this.ctx = ctx;
     }
@@ -33,15 +24,24 @@ export class Animate {
 
 
     private animate() {
-        this.iAnimates.forEach((animate) => {
-            if (this.ctx === undefined || this.canvas === undefined) {
-                animate.clear();
-            } else {
-                this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
-            }
-            animate.update();
-            animate.draw();
-        });
         requestAnimationFrame(this.animate.bind(this));
+        if (!(this.ctx === undefined || this.canvas === undefined)) {
+            this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+        }
+        this.iAnimates.forEach((animate) => {
+            if (animate.shouldBeRemove) {
+                this.idxToClear.push(this.iAnimates.indexOf(animate));
+            } else {
+                if (this.ctx === undefined || this.canvas === undefined) {
+                    animate.clear();
+                }
+                animate.update();
+                animate.draw();
+            }
+        });
+        this.idxToClear.forEach((idx) => {
+            this.iAnimates.splice(idx, 1);
+        });
+        this.idxToClear.length = 0;
     }
 }

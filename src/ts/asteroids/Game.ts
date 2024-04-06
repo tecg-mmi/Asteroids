@@ -3,8 +3,7 @@ import {Animate} from "../framework/Animate";
 import {KeyController} from "./KeyController";
 import {settings} from "./settings";
 import {IGameStatus} from "../framework/types/IGameStatus";
-import {Circle} from "../framework/shapes/Circle";
-import {Rgb} from "../framework/colors/Rgb";
+import {Asteroid} from "./drawables/Asteroid";
 
 export class Game {
     private readonly canvas: HTMLCanvasElement;
@@ -14,6 +13,7 @@ export class Game {
     private readonly keyControl: KeyController;
     private header: HTMLElement;
     private gameStatus: IGameStatus = {isStarted: false};
+    private asteroids: Asteroid[] = [];
 
     constructor() {
         this.header = document.querySelector(settings.h1.selector);
@@ -21,9 +21,14 @@ export class Game {
         this.resizeCanvas();
         this.ctx = this.canvas.getContext('2d');
         this.keyControl = new KeyController(this.gameStatus, this.hideHeader.bind(this));
-        this.ship = new Ship(this.ctx, this.canvas, this.keyControl);
-        this.animation = new Animate();
+        this.animation = new Animate(this.canvas, this.ctx);
+        this.ship = new Ship(this.ctx, this.canvas, this.keyControl,this.animation);
         this.animation.registerForAnimation(this.ship);
+        for (let i = 0; i < settings.asteroid.initialCount; i++) {
+            this.asteroids.push(new Asteroid(this.ctx, this.canvas,this.animation));
+            this.asteroids[i].draw();
+            this.animation.registerForAnimation(this.asteroids[i]);
+        }
         this.ship.draw();
         this.animation.start();
         this.addEventListeners();
