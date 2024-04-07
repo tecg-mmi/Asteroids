@@ -53,9 +53,8 @@ export class Asteroid extends Circle implements IAnimatable {
 
     draw(): void {
         this.ctx.save();
-        this.ctx.translate(this.position.x, this.position.y);
+        this.ctx.translate(this.position.x + settings.asteroid.maxSize / 2, this.position.y + settings.asteroid.maxSize / 2);
         this.ctx.rotate(this.degree);
-        this.ctx.translate(-settings.asteroid.maxSize / 2, -settings.asteroid.maxSize / 2);
         this.ctx.strokeStyle = this.color.toString();
         this.ctx.stroke(this.path);
         this.ctx.restore();
@@ -94,9 +93,12 @@ export class Asteroid extends Circle implements IAnimatable {
     }
 
     private checkCollisionWithBullets() {
+        this.ctx.save();
+        this.ctx.translate(this.position.x + settings.asteroid.maxSize / 2, this.position.y + settings.asteroid.maxSize / 2);
+        this.ctx.rotate(this.degree);
         this.animation.iAnimates.forEach((bullet: IAnimatable) => {
             if (bullet instanceof Bullet) {
-                if (this.ctx.isPointInPath(this.path, bullet.position.x - this.position.x, bullet.position.y - this.position.y)) {
+                if (this.ctx.isPointInPath(this.path, bullet.position.x, bullet.position.y)) {
                     this.color = Rgb.red;
                     if (this.scale > settings.asteroid.scale.min / 2) {
                         for (let i = 0; i < settings.asteroid.newAsteroidsCount; i++) {
@@ -107,13 +109,13 @@ export class Asteroid extends Circle implements IAnimatable {
                 }
             }
         });
+        this.ctx.restore();
     }
 
     private checkCollisionWithShip() {
         this.ctx.save();
-        this.ctx.translate(this.position.x, this.position.y);
+        this.ctx.translate(this.position.x + settings.asteroid.maxSize / 2, this.position.y + settings.asteroid.maxSize / 2);
         this.ctx.rotate(this.degree);
-        this.ctx.translate(-settings.asteroid.maxSize / 2, -settings.asteroid.maxSize / 2);
         this.ship.points.forEach((point) => {
             if (this.ctx.isPointInPath(this.path, this.ship.position.x - point.x, this.ship.position.y - point.y)) {
                 console.log('collision with ship');
