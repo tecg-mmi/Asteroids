@@ -4,7 +4,7 @@ import {IPosition} from "../types/iPosition";
 export abstract class Shape {
     protected readonly ctx: CanvasRenderingContext2D;
     protected color: IColor;
-    public position: IPosition;
+    public readonly position: IPosition;
     protected readonly isFilled: boolean;
     public degree: number;
 

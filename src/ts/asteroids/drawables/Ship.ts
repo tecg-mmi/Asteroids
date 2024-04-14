@@ -36,13 +36,13 @@ export class Ship extends Triangle implements IAnimatable {
     }
 
     private handleKey() {
-        this.keyControl.activeKeys.forEach((value) => {
-            switch (value) {
+        this.keyControl.activeKeys.forEach((key) => {
+            switch (key) {
                 case 'ArrowUp':
                     this.speed.add(Vector.fromAngle(this.degree, settings.ship.speed));
                     break;
                 case 'ArrowDown':
-                    this.speed.multiply(0.99);
+                    this.speed.multiply(settings.ship.friction);
                     break;
                 case 'ArrowLeft':
                     this.degree += settings.ship.left;

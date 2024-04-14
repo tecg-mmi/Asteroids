@@ -9,8 +9,8 @@ export class Triangle extends Shape {
 
     constructor(ctx: CanvasRenderingContext2D, position: IPosition, width: number, height: number, color: IColor, degree: number = 0, isFilled: boolean = true) {
         super(ctx, color, position, degree, isFilled);
-        this.width = Math.trunc(width)
-        this.height = Math.trunc(height);
+        this.width = width;
+        this.height = height;
         this.points = [
             {x: 0, y: -this.height / 2},
             {x: -this.width / 2, y: this.height / 2},

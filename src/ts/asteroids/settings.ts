@@ -24,7 +24,8 @@ export const settings = {
     ],
     bullet: {
         color: Rgb.white,
-        radius: 2, length: 10
+        radius: 2,
+        speed: 10
 
     },
     h1: {

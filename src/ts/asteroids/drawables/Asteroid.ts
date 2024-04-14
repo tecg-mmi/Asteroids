@@ -24,7 +24,7 @@ export class Asteroid extends Circle implements IAnimatable {
     private maxSize: number;
 
     constructor(ctx: CanvasRenderingContext2D, canvas: HTMLCanvasElement, ship: Ship, gameStatus: IGameStatus, animation: Animate, parent: Asteroid = null) {
-        super(ctx, parent ? Rgb.blue : settings.asteroid.color, new Vector({
+        super(ctx, settings.asteroid.color, new Vector({
             x: parent ? parent.position.x : Random.int(0, canvas.width),
             y: parent ? parent.position.y : Random.int(0, canvas.height)
         }), Random.float(0, Math.PI * 2), settings.asteroid.radius, false);
@@ -99,7 +99,6 @@ export class Asteroid extends Circle implements IAnimatable {
         this.animation.iAnimates.forEach((bullet: IAnimatable) => {
             if (bullet instanceof Bullet) {
                 if (this.ctx.isPointInPath(this.path, bullet.position.x, bullet.position.y)) {
-                    this.color = Rgb.red;
                     if (this.scale > settings.asteroid.scale.min / 2) {
                         for (let i = 0; i < settings.asteroid.newAsteroidsCount; i++) {
                             this.animation.registerForAnimation(new Asteroid(this.ctx, this.canvas, this.ship, this.gameStatus, this.animation, this));
