@@ -1,5 +1,4 @@
 import {Triangle} from "../../framework/shapes/Triangle";
-import {Rgb} from "../../framework/colors/Rgb";
 import {settings} from "../settings";
 import {IAnimatable} from "../../framework/types/IAnimatable";
 import {KeyController} from "../KeyController";
@@ -19,7 +18,7 @@ export class Ship extends Triangle implements IAnimatable {
         super(ctx, new Vector({
             x: canvas.width / 2,
             y: canvas.height / 2
-        }), settings.ship.width, settings.ship.height, Rgb.white, 0, false);
+        }), settings.ship.width, settings.ship.height, settings.ship.color, 0, false);
         this.animation = animation;
         this.canvas = canvas;
         this.speed = new Vector({x: 0, y: 0});
