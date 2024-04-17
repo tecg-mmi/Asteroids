@@ -18,7 +18,7 @@ export class Game {
     constructor() {
         this.gameStatus = {isStarted: false, isOver: false, score: 0, lives: 3};
         this.header = document.querySelector(settings.h1.selector);
-        this.canvas = document.getElementById('game') as HTMLCanvasElement;
+        this.canvas = document.getElementById(settings.canvas.id) as HTMLCanvasElement;
         this.resizeCanvas();
         this.ctx = this.canvas.getContext('2d');
         this.keyControl = new KeyController(this.gameStatus, this.hideHeader.bind(this));

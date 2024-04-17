@@ -48,6 +48,5 @@ export class Animate {
             this.iAnimates.splice(idx, 1);
         });
         this.idxToClear.length = 0;
-        console.log(this.iAnimates.length);
     }
 }
