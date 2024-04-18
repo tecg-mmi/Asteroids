@@ -10,7 +10,7 @@ export class Ship extends Triangle implements IAnimatable {
     private readonly canvas: HTMLCanvasElement;
     private readonly speed: Vector;
     public keyControl: KeyController;
-    private bulletTimer: number;
+    private bulletCounter: number;
     shouldBeRemove: boolean = false;
     private animation: Animate;
 
@@ -23,7 +23,7 @@ export class Ship extends Triangle implements IAnimatable {
         this.canvas = canvas;
         this.speed = new Vector({x: 0, y: 0});
         this.keyControl = keyControl;
-        this.bulletTimer = 0;
+        this.bulletCounter = 0;
     }
 
     update() {
@@ -38,21 +38,21 @@ export class Ship extends Triangle implements IAnimatable {
         this.keyControl.activeKeys.forEach((key) => {
             switch (key) {
                 case 'ArrowUp':
-                    this.speed.add(Vector.fromAngle(this.degree, settings.ship.speed));
+                    this.speed.add(Vector.fromAngle(this.orientation, settings.ship.speed));
                     break;
                 case 'ArrowDown':
                     this.speed.multiply(settings.ship.friction);
                     break;
                 case 'ArrowLeft':
-                    this.degree += settings.ship.left;
+                    this.orientation += settings.ship.left;
                     break;
                 case 'ArrowRight':
-                    this.degree += settings.ship.right;
+                    this.orientation += settings.ship.right;
                     break;
                 case ' ':
-                    this.bulletTimer++;
-                    if (this.bulletTimer > 10) {
-                        this.bulletTimer = 0;
+                    this.bulletCounter++;
+                    if (this.bulletCounter > settings.ship.bulletInterval) {
+                        this.bulletCounter = 0;
                         this.fireBullet();
                     }
                     break;
@@ -86,9 +86,9 @@ export class Ship extends Triangle implements IAnimatable {
 
     private fireBullet() {
         const position = new Vector(this.position);
-        position.add(Vector.fromAngle(this.degree, settings.ship.height / 2));
+        position.add(Vector.fromAngle(this.orientation, settings.ship.height / 2));
         this.animation.registerForAnimation(new Bullet(
-            this.ctx, this.canvas, position, this.degree, this.speed));
+            this.ctx, this.canvas, position, this.orientation, this.speed));
     }
 
     center() {

@@ -6,16 +6,16 @@ export abstract class Shape {
     protected color: IColor;
     public readonly position: IPosition;
     protected readonly isFilled: boolean;
-    public degree: number;
+    public orientation: number;
 
 
-    protected constructor(ctx: CanvasRenderingContext2D, color: IColor, position: IPosition, degree: number, isFilled: boolean = true) {
+    protected constructor(ctx: CanvasRenderingContext2D, color: IColor, position: IPosition, orientation: number, isFilled: boolean = true) {
         this.ctx = ctx;
         this.color = color;
         this.position = position;
         this.position = position;
         this.isFilled = isFilled;
-        this.degree = degree;
+        this.orientation = orientation;
     }
 
 

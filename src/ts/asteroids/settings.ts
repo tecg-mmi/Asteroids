@@ -13,10 +13,12 @@ export const settings = {
         velocity: {x: 1, y: 2.5},
         left: -Math.PI / 15,
         right: Math.PI / 15,
-        friction: 0.99
+        friction: 0.99,
+        bulletInterval: 10
 
     },
-    keys: ['ArrowUp',
+    keys: [
+        'ArrowUp',
         'ArrowRight',
         'ArrowLeft',
         'ArrowDown',
@@ -52,7 +54,7 @@ export const settings = {
             max: 1.20
 
         },
-        speed: {
+        acceleration: {
             min: 2,
             max: 5
 
