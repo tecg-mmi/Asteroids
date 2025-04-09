@@ -1,23 +1,25 @@
 import {settings} from "./settings";
+import {GameStatus} from "./GameStatus";
 
 export class GameController {
-    public currentKeys: string[] = [];
+    public readonly currentKeys: string[] = [];
+    private readonly gameStatus: GameStatus;
 
 
-    constructor() {
+    constructor(gameStatus: GameStatus) {
+        this.gameStatus = gameStatus;
         window.addEventListener('keydown', (evt) => {
             this.keyDown(evt);
-            console.log(this.currentKeys);
         });
 
         window.addEventListener('keyup', (evt) => {
             this.keyUp(evt);
-            console.log(this.currentKeys);
         });
     }
 
     private keyDown(evt: KeyboardEvent) {
         if (settings.keys.includes(evt.key)) {
+            this.gameStatus.isStarted = true;
             if (!this.currentKeys.includes(evt.key)) {
                 this.currentKeys.push(evt.key);
             }
