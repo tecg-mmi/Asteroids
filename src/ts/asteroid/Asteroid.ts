@@ -23,7 +23,6 @@ export class Asteroid {
         this.animation.registeriAnimatable(this.ship);
         this.animation.start();
         this.addEventListeners();
-        console.log(this.gameStatus);
     }
 
     private resizeCanvas() {

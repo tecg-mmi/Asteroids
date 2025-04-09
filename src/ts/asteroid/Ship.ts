@@ -6,6 +6,7 @@ import {GameController} from "./GameController";
 export class Ship extends Triangle implements iAnimatable {
     private canvas: HTMLCanvasElement;
     private gameController: GameController;
+    private speed: number;
 
     constructor(ctx: CanvasRenderingContext2D, canvas: HTMLCanvasElement, gameController: GameController) {
         super(ctx, {
@@ -13,11 +14,15 @@ export class Ship extends Triangle implements iAnimatable {
             y: canvas.height / 2
         }, settings.ship.color, settings.ship.width, settings.ship.height, 0);
         this.canvas = canvas;
+        this.speed = 0;
         this.gameController = gameController;
     }
 
     animate(): void {
         this.handleKey();
+
+        this.position.x += Math.cos(this.rotation - Math.PI / 2) * this.speed;
+        this.position.y += Math.sin(this.rotation - Math.PI / 2) * this.speed;
 
         if (this.position.x + this.points[0].x > this.canvas.width) {
             this.position.x = this.width / 2;
@@ -38,10 +43,10 @@ export class Ship extends Triangle implements iAnimatable {
                     this.rotation += settings.ship.left;
                     break;
                 case 'ArrowUp':
-                    this.position.y--;
+                    this.speed += settings.ship.speed;
                     break;
                 case 'ArrowDown':
-                    this.position.y++;
+                    this.speed -= settings.ship.speed;
                     break;
             }
         })
