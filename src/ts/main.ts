@@ -1,1 +1,3 @@
-console.log('Hello, World!!');
+import {Asteroid} from "./asteroid/Asteroid";
+
+new Asteroid();
