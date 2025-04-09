@@ -15,8 +15,8 @@ export class Game {
         this.ctx = this.canvas.getContext("2d");
         this.resizeCanvas();
         this.animation = new Animation(this.canvas, this.ctx);
-        this.ship = new Ship(this.ctx, this.canvas);
         this.keyController = new KeyController(settings.keys);
+        this.ship = new Ship(this.ctx, this.canvas, this.keyController);
         this.addEventListeners();
         this.animation.registeriAnimatable(this.ship);
         this.animation.start();

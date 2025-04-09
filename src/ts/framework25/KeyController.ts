@@ -1,16 +1,14 @@
 export class KeyController {
-    private currentKeys: string[] = [];
+    public currentKeys: string[] = [];
     private allowedKeys: string[];
 
     constructor(allowedKeys: string[]) {
         this.allowedKeys = allowedKeys
         window.addEventListener('keydown', (evt) => {
             this.keyDown(evt);
-            console.log(this.currentKeys)
         });
         window.addEventListener('keyup', (evt) => {
             this.keyUp(evt);
-            console.log(this.currentKeys)
         });
     }
 
