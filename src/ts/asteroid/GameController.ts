@@ -4,10 +4,12 @@ import {GameStatus} from "./GameStatus";
 export class GameController {
     public readonly currentKeys: string[] = [];
     private readonly gameStatus: GameStatus;
+    private readonly runWhenStarted: () => void;
 
 
-    constructor(gameStatus: GameStatus) {
+    constructor(gameStatus: GameStatus, runWhenStarted: () => void) {
         this.gameStatus = gameStatus;
+        this.runWhenStarted = runWhenStarted;
         window.addEventListener('keydown', (evt) => {
             this.keyDown(evt);
         });
@@ -19,7 +21,11 @@ export class GameController {
 
     private keyDown(evt: KeyboardEvent) {
         if (settings.keys.includes(evt.key)) {
-            this.gameStatus.isStarted = true;
+            if (!this.gameStatus.isStarted) {
+                this.gameStatus.isStarted = true;
+                this.runWhenStarted();
+            }
+
             if (!this.currentKeys.includes(evt.key)) {
                 this.currentKeys.push(evt.key);
             }
