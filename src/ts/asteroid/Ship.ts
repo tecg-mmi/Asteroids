@@ -14,9 +14,14 @@ export class Ship extends Triangle implements iAnimatable {
     }
 
     animate(): void {
+        this.handleKeys();
+
         this.position.x++;
         this.draw();
     }
 
 
+    private handleKeys() {
+
+    }
 }

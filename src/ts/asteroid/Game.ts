@@ -1,12 +1,14 @@
 import {settings} from "./settings";
 import {Ship} from "./Ship";
 import {Animation} from "../framework25/Animation";
+import {KeyController} from "../framework25/KeyController";
 
 export class Game {
     private readonly canvas: HTMLCanvasElement;
     private readonly ctx: CanvasRenderingContext2D;
     private readonly ship: Ship;
     private readonly animation: Animation;
+    private readonly keyController: KeyController;
 
     constructor() {
         this.canvas = document.getElementById(settings.canvas.id) as HTMLCanvasElement;
@@ -14,10 +16,15 @@ export class Game {
         this.resizeCanvas();
         this.animation = new Animation(this.canvas, this.ctx);
         this.ship = new Ship(this.ctx, this.canvas);
-        window.addEventListener('resize', this.resizeCanvas.bind(this));
+        this.keyController = new KeyController(settings.keys);
+        this.addEventListeners();
         this.animation.registeriAnimatable(this.ship);
         this.animation.start();
 
+    }
+
+    private addEventListeners() {
+        window.addEventListener('resize', this.resizeCanvas.bind(this));
     }
 
     private resizeCanvas() {
