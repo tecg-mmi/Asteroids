@@ -2,6 +2,7 @@ import {Shape} from "./Shape";
 import {iPosition} from "../types/iPosition";
 import {iColor} from "../types/iColor";
 import {iDrawable} from "../types/iDrawable";
+import {Vector} from "../Vector";
 
 export class Rectangle extends Shape implements iDrawable{
     width: number;
@@ -9,7 +10,7 @@ export class Rectangle extends Shape implements iDrawable{
     rotation: number;
 
 
-    constructor(ctx: CanvasRenderingContext2D, position: iPosition, color: iColor, width: number, height: number, rotation: number = 0) {
+    constructor(ctx: CanvasRenderingContext2D, position: Vector, color: iColor, width: number, height: number, rotation: number = 0) {
         super(ctx, position, color);
         this.width = width;
         this.height = height;
