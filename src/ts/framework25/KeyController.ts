@@ -1,9 +1,12 @@
 export class KeyController {
     public currentKeys: string[] = [];
     private allowedKeys: string[];
+    private readonly runWhenStarted: () => void;
+    private isStarted: boolean = false;
 
-    constructor(allowedKeys: string[]) {
-        this.allowedKeys = allowedKeys
+    constructor(allowedKeys: string[], runWhenStart: () => void) {
+        this.allowedKeys = allowedKeys;
+        this.runWhenStarted = runWhenStart;
         window.addEventListener('keydown', (evt) => {
             this.keyDown(evt);
         });
@@ -14,6 +17,12 @@ export class KeyController {
 
     private keyDown(evt: KeyboardEvent) {
         if (this.allowedKeys.includes(evt.key)) {
+
+            if (!this.isStarted) {
+                this.isStarted = true;
+                this.runWhenStarted();
+            }
+
             if (this.currentKeys.indexOf(evt.key) === -1) {
                 this.currentKeys.push(evt.key);
             }
