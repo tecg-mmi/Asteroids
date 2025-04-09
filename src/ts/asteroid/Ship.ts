@@ -26,8 +26,6 @@ export class Ship extends Triangle implements iAnimatable {
         this.position.add(this.speed);
 
 
-
-
         this.draw();
     }
 
