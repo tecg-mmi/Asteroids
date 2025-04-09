@@ -2,11 +2,12 @@ import {Rectangle} from "./Rectangle";
 import {iPosition} from "../types/iPosition";
 import {iColor} from "../types/iColor";
 import {iDrawable} from "../types/iDrawable";
+import {Vector} from "../Vector";
 
 export class Triangle extends Rectangle implements iDrawable {
     private points: iPosition[] = [];
 
-    constructor(ctx: CanvasRenderingContext2D, position: iPosition, color: iColor, width: number, height: number, rotation: number) {
+    constructor(ctx: CanvasRenderingContext2D, position: Vector, color: iColor, width: number, height: number, rotation: number) {
         super(ctx, position, color, width, height, rotation);
 
         this.points.push({

@@ -2,6 +2,7 @@ import {Triangle} from "../framework25/shapes/Triangle";
 import {settings} from "./settings";
 import {iAnimatable} from "../framework25/types/iAnimatable";
 import {KeyController} from "../framework25/KeyController";
+import {Vector} from "../framework25/Vector";
 
 export class Ship extends Triangle implements iAnimatable {
     private canvas: HTMLCanvasElement;
@@ -9,10 +10,10 @@ export class Ship extends Triangle implements iAnimatable {
     private speed: number;
 
     constructor(ctx: CanvasRenderingContext2D, canvas: HTMLCanvasElement, keyController: KeyController) {
-        super(ctx, {
+        super(ctx, new Vector({
             x: canvas.width / 2,
             y: canvas.height / 2,
-        }, settings.ship.color, settings.ship.width, settings.ship.height, 0);
+        }), settings.ship.color, settings.ship.width, settings.ship.height, 0);
         this.canvas = canvas;
         this.keyController = keyController;
         this.speed = 0;
