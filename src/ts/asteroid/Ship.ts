@@ -7,7 +7,7 @@ import {Vector} from "../framework25/Vector";
 export class Ship extends Triangle implements iAnimatable {
     private canvas: HTMLCanvasElement;
     private keyController: KeyController;
-    private speed: number;
+    private speed: Vector;
 
     constructor(ctx: CanvasRenderingContext2D, canvas: HTMLCanvasElement, keyController: KeyController) {
         super(ctx, new Vector({
@@ -16,15 +16,13 @@ export class Ship extends Triangle implements iAnimatable {
         }), settings.ship.color, settings.ship.width, settings.ship.height, 0);
         this.canvas = canvas;
         this.keyController = keyController;
-        this.speed = 0;
+        this.speed = new Vector({x: 0, y: 0});
     }
 
     animate(): void {
         this.handleKeys();
-
-
-        this.position.x += Math.cos(this.rotation - Math.PI / 2) * this.speed;
-        this.position.y += Math.sin(this.rotation - Math.PI / 2) * this.speed;
+        this.speed.multiply(settings.ship.friction);
+        this.position.add(this.speed);
 
         this.draw();
     }
@@ -40,10 +38,10 @@ export class Ship extends Triangle implements iAnimatable {
                     this.rotation += settings.ship.left;
                     break;
                 case 'ArrowUp':
-                    this.speed += settings.ship.speed;
+                    this.speed.add(Vector.fromAngle(this.rotation, settings.ship.speed));
                     break;
                 case 'ArrowDown':
-                    // TODO : Subtract some nice Speed
+                    this.speed.multiply(settings.ship.friction);
                     break;
             }
         })
