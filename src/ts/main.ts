@@ -1,3 +1,3 @@
-import {Asteroid} from "./asteroid/Asteroid";
+import {Game} from "./asteroid/Game";
 
-new Asteroid();
+new Game();

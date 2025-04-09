@@ -1,8 +1,9 @@
 import {Shape} from "./Shape";
 import {iPosition} from "../types/iPosition";
 import {iColor} from "../types/iColor";
+import {iDrawable} from "../types/iDrawable";
 
-export class Rectangle extends Shape {
+export class Rectangle extends Shape implements iDrawable{
     width: number;
     height: number;
     rotation: number;
