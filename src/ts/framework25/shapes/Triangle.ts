@@ -15,10 +15,13 @@ export class Triangle extends Rectangle implements iDrawable {
 
     draw() {
         this.ctx.save();
+        this.ctx.translate(this.position.x, this.position.y);
         this.ctx.beginPath();
+        this.ctx.fillStyle = this.color.toString();
         this.ctx.moveTo(this.points[0].x, this.points[0].y);
         this.ctx.lineTo(this.points[1].x, this.points[1].y);
         this.ctx.lineTo(this.points[2].x, this.points[2].y);
+        this.ctx.fill();
         this.ctx.closePath();
         this.ctx.restore();
     }

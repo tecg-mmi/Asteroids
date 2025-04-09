@@ -1,14 +1,18 @@
 import {settings} from "./settings";
+import {Ship} from "./Ship";
 
 export class Asteroid {
-    private canvas: HTMLCanvasElement;
-    private ctx: CanvasRenderingContext2D;
+    private readonly canvas: HTMLCanvasElement;
+    private readonly ctx: CanvasRenderingContext2D;
+    private readonly ship: Ship;
 
     constructor() {
         this.canvas = document.getElementById(settings.canvas.id) as HTMLCanvasElement;
         this.ctx = this.canvas.getContext('2d');
-        this.resizeCanvas()
-        this.addEventListeners()
+        this.resizeCanvas();
+        this.ship = new Ship(this.ctx, this.canvas);
+        this.addEventListeners();
+        this.ship.draw();
     }
 
     private resizeCanvas() {
