@@ -1,18 +1,23 @@
 import {settings} from "./settings";
 import {Ship} from "./Ship";
+import {Animation} from "../framework25/Animation";
 
 export class Game {
-    private canvas: HTMLCanvasElement;
-    private ctx: CanvasRenderingContext2D;
-    private ship: Ship;
+    private readonly canvas: HTMLCanvasElement;
+    private readonly ctx: CanvasRenderingContext2D;
+    private readonly ship: Ship;
+    private readonly animation: Animation;
 
     constructor() {
         this.canvas = document.getElementById(settings.canvas.id) as HTMLCanvasElement;
         this.ctx = this.canvas.getContext("2d");
         this.resizeCanvas();
+        this.animation = new Animation(this.canvas, this.ctx);
         this.ship = new Ship(this.ctx, this.canvas);
         window.addEventListener('resize', this.resizeCanvas.bind(this));
-        this.ship.draw();
+        this.animation.registeriAnimatable(this.ship);
+        this.animation.start();
+
     }
 
     private resizeCanvas() {
