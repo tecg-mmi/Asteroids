@@ -22,7 +22,7 @@ export class Vector implements iPosition {
         return this;
     }
 
-    fromAngle(angle: number, length: number = 1): Vector {
+    static fromAngle(angle: number, length: number = 1): Vector {
         return new Vector({
             x: Math.cos(angle - Math.PI / 2) * length,
             y: Math.sin(angle - Math.PI / 2) * length
