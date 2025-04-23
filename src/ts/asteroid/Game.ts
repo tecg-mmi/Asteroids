@@ -4,7 +4,7 @@ import {Animation} from "../framework25/Animation";
 import {GameController} from "./GameController";
 import {GameStatus} from "./GameStatus";
 
-export class Asteroid {
+export class Game {
     private readonly canvas: HTMLCanvasElement;
     private readonly ctx: CanvasRenderingContext2D;
     private readonly ship: Ship;
