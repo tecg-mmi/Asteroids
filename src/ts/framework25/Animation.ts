@@ -4,7 +4,7 @@ import {settings} from "./settings";
 export class Animation {
     private canvas: HTMLCanvasElement;
     private ctx: CanvasRenderingContext2D;
-    private iAnimatables: iAnimatable[];
+    public iAnimatables: iAnimatable[];
     private idxOfiAnimatablesToBeRemoved: number[];
     private requestAnimationFrameID: number;
 

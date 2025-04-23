@@ -4,6 +4,9 @@ import {settings} from "./settings";
 import {randomFloat, randomInt} from "../framework25/helpers/random";
 import {Rectangle} from "../framework25/shapes/Rectangle";
 import {Collision} from "../framework25/helpers/Collision";
+import {Animation} from "../framework25/Animation";
+import {Bullet} from "./Bullet";
+import {Rgb} from "../framework25/colors/Rgb";
 
 export class Asteroid extends Rectangle implements iAnimatable {
     private readonly canvas: HTMLCanvasElement;
@@ -13,12 +16,14 @@ export class Asteroid extends Rectangle implements iAnimatable {
     private readonly acceleration: Vector;
     private readonly rotationSpeed: number;
     public shouldBeRemoved: boolean = false;
+    private animation: Animation;
+    private parent: Asteroid;
 
-    constructor(ctx: CanvasRenderingContext2D, canvas: HTMLCanvasElement) {
+    constructor(ctx: CanvasRenderingContext2D, canvas: HTMLCanvasElement, animation: Animation, parent: Asteroid = null) {
         super(ctx, new Vector({
             x: randomInt(settings.asteroid.size / 2, canvas.width - settings.asteroid.size / 2),
             y: randomInt(settings.asteroid.size / 2, canvas.height - settings.asteroid.size / 2)
-        }), settings.asteroid.color, settings.asteroid.size, settings.asteroid.size, 0);
+        }), parent ? Rgb.red : settings.asteroid.color, settings.asteroid.size, settings.asteroid.size, 0);
         this.canvas = canvas;
         this.path = new Path2D(settings.asteroid.shapes[randomInt(0, settings.asteroid.shapes.length - 1)]);
         this.path.closePath();
@@ -27,12 +32,38 @@ export class Asteroid extends Rectangle implements iAnimatable {
         this.acceleration = Vector.fromAngle(this.direction, randomInt(settings.asteroid.acceleration.min, settings.asteroid.acceleration.max));
         this.speed.add(this.acceleration);
         this.rotationSpeed = randomFloat(settings.asteroid.rotationSpeed.min, settings.asteroid.rotationSpeed.max);
+        this.animation = animation;
+        this.parent = parent;
     }
 
     update() {
         this.position.add(this.speed);
         this.rotation += this.rotationSpeed;
         Collision.replaceOutOfBounds(this, this.canvas);
+        this.checkCollisionWithBullet();
+    }
+
+    private checkCollisionWithBullet() {
+        this.ctx.save();
+        this.ctx.translate(this.position.x, this.position.y);
+        this.ctx.rotate(this.rotation);
+        this.ctx.translate(-settings.asteroid.size / 2, -settings.asteroid.size / 2);
+        this.animation.iAnimatables.forEach((bullet) => {
+            if (bullet instanceof Bullet) {
+                if (this.ctx.isPointInPath(this.path, bullet.position.x, bullet.position.y)) {
+                    if (this.parent === null) {
+                        for (let i = 0; i < settings.asteroid.newAsteroidsCount; i++) {
+                            this.animation.registeriAnimatable(new Asteroid(this.ctx, this.canvas, this.animation, this));
+                        }
+                        this.shouldBeRemoved = true;
+                    } else {
+                        this.shouldBeRemoved = true;
+                    }
+
+                }
+            }
+        });
+        this.ctx.restore();
     }
 
     animate(): void {

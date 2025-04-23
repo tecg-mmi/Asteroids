@@ -36,7 +36,7 @@ export const settings = {
         hideClass: 'hidden',
     },
     asteroid: {
-        initialCount: 4,
+        initialCount: 1,
         size: 150,
         shapes: [
             "M64.68,41.58L79.14.5l20.5,38.85,38.87-1.91-1.12,46.55,13.11,8.21-53.21-10.46-6.39,68.76-33.75-22.93-9.04-31.85L.5,110.16l23.79-41.04-5.83-25.14,46.22-2.39Z",
@@ -60,7 +60,7 @@ export const settings = {
             max: 5
 
         },
-        newAsteroidsCount: 2,
+        newAsteroidsCount: 1,
         rotationSpeed: {
             min: Math.PI / -300,
             max: Math.PI / 300
