@@ -21,7 +21,7 @@ export class Game {
         this.gameStatus = new GameStatus();
         this.animation = new Animation(this.canvas, this.ctx);
         this.keyController = new KeyController(settings.keys, this.start.bind(this));
-        this.ship = new Ship(this.ctx, this.canvas, this.keyController);
+        this.ship = new Ship(this.ctx, this.canvas, this.keyController, this.animation);
         this.addEventListeners();
         this.animation.registeriAnimatable(this.ship);
         this.generateAsteroids();

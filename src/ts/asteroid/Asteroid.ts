@@ -12,6 +12,7 @@ export class Asteroid extends Rectangle implements iAnimatable {
     private readonly speedRotation: number;
     private readonly speed: Vector;
     private readonly acceleration: Vector;
+    public shouldBeRemoved: boolean = false;
 
     constructor(ctx: CanvasRenderingContext2D, canvas: HTMLCanvasElement) {
         super(ctx, new Vector({
