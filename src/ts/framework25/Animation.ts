@@ -1,4 +1,5 @@
 import {iAnimatable} from "./types/iAnimatable";
+import {settings} from "./settings";
 
 export class Animation {
     private canvas: HTMLCanvasElement;
@@ -37,13 +38,12 @@ export class Animation {
                 const idx = this.iAnimatables.indexOf(animatable);
                 if (!this.idxOfiAnimatablesToBeRemoved.includes(idx)) {
                     this.idxOfiAnimatablesToBeRemoved.push(idx);
-                    console.log(this.idxOfiAnimatablesToBeRemoved);
                 }
             }
             animatable.animate();
         }
 
-        if (this.iAnimatables.length > 5) {
+        if (this.iAnimatables.length > settings.maxUnnecessaryAnimatablesItemCount) {
             for (const idx of this.idxOfiAnimatablesToBeRemoved) {
                 this.iAnimatables.splice(idx, 1);
             }
