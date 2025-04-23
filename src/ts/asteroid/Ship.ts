@@ -12,6 +12,7 @@ export class Ship extends Triangle implements iAnimatable {
     private readonly speed: Vector;
     private animation: Animation;
     private bulletCount: number;
+    public shouldBeRemoved: boolean = false;
 
     constructor(ctx: CanvasRenderingContext2D, canvas: HTMLCanvasElement, gameController: GameController, animation: Animation) {
         super(ctx, new Vector({
@@ -77,7 +78,7 @@ export class Ship extends Triangle implements iAnimatable {
     fireBullets() {
         if (++this.bulletCount >= settings.bullet.maxCount) {
             this.bulletCount = 0;
-            this.animation.registeriAnimatable(new Bullet(this.ctx, this.position, this.speed, this.rotation));
+            this.animation.registeriAnimatable(new Bullet(this.ctx, this.canvas, this.position, this.speed, this.rotation));
         }
     }
 }

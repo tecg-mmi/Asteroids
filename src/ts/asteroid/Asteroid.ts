@@ -12,6 +12,7 @@ export class Asteroid extends Rectangle implements iAnimatable {
     private readonly speed: Vector;
     private readonly acceleration: Vector;
     private readonly rotationSpeed: number;
+    public shouldBeRemoved: boolean = false;
 
     constructor(ctx: CanvasRenderingContext2D, canvas: HTMLCanvasElement) {
         super(ctx, new Vector({
@@ -48,6 +49,5 @@ export class Asteroid extends Rectangle implements iAnimatable {
         this.ctx.strokeStyle = this.color.toString();
         this.ctx.stroke(this.path);
         this.ctx.restore();
-
     }
 }

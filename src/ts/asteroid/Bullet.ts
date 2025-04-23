@@ -8,19 +8,22 @@ export class Bullet extends Circle implements iAnimatable {
     private readonly speed: Vector;
     private readonly acceleration: Vector;
     private readonly direction: number;
+    private readonly canvas: HTMLCanvasElement;
+    public shouldBeRemoved: boolean = false;
 
-    constructor(ctx: CanvasRenderingContext2D, position: Vector, speed: Vector, direction: number) {
+    constructor(ctx: CanvasRenderingContext2D, canvas: HTMLCanvasElement, position: Vector, speed: Vector, direction: number) {
         super(ctx, new Vector(position), settings.bullet.color, settings.bullet.radius);
 
         this.direction = direction;
         this.speed = new Vector(speed);
         this.acceleration = Vector.fromAngle(this.direction, settings.bullet.speed);
         this.speed.add(this.acceleration);
-
+        this.canvas = canvas;
     }
 
     update() {
         this.position.add(this.speed);
+        this.shouldBeRemoved = this.isOutOfCanvas();
     }
 
     animate(): void {
@@ -28,5 +31,10 @@ export class Bullet extends Circle implements iAnimatable {
         this.draw();
     }
 
-
+    private isOutOfCanvas(): boolean {
+        return this.position.x > this.canvas.width + settings.bullet.radius ||
+            this.position.x < -settings.bullet.radius ||
+            this.position.y < -settings.bullet.radius ||
+            this.position.y > this.canvas.height + settings.bullet.radius
+    }
 }
