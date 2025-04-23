@@ -20,7 +20,7 @@ export class Game {
         this.gameStatus = new GameStatus();
         this.gameController = new GameController(this.gameStatus, this.removeText.bind(this));
         this.animation = new Animation(this.canvas, this.ctx);
-        this.ship = new Ship(this.ctx, this.canvas, this.gameController);
+        this.ship = new Ship(this.ctx, this.canvas, this.gameController, this.animation);
         this.animation.registeriAnimatable(this.ship);
         this.initAsteroids()
         this.animation.start();
