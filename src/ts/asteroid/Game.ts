@@ -12,10 +12,8 @@ export class Game {
     private readonly animation: Animation;
     private readonly gameController: GameController;
     private readonly gameStatus: GameStatus;
-    private readonly asteroids: Asteroid[];
 
     constructor() {
-        this.asteroids = [];
         this.canvas = document.getElementById(settings.canvas.id) as HTMLCanvasElement;
         this.ctx = this.canvas.getContext('2d');
         this.resizeCanvas();
@@ -46,9 +44,7 @@ export class Game {
 
     private initAsteroids() {
         for (let i = 0; i < settings.asteroid.initialCount; i++) {
-            const asteroid = new Asteroid(this.ctx, this.canvas);
-            this.asteroids.push(asteroid);
-            this.animation.registeriAnimatable(asteroid);
+            this.animation.registeriAnimatable(new Asteroid(this.ctx, this.canvas));
         }
     }
 }
