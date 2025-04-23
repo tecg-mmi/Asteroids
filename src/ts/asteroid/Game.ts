@@ -30,7 +30,7 @@ export class Game {
 
     private generateAsteroids() {
         for (let i = 0; i < settings.asteroid.initialCount; i++) {
-            this.animation.registeriAnimatable(new Asteroid(this.ctx, this.canvas, this.animation));
+            this.animation.registeriAnimatable(new Asteroid(this.ctx, this.canvas, this.animation, this.ship, this.gameStatus));
         }
     }
 

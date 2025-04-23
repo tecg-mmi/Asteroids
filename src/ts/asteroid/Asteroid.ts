@@ -6,6 +6,8 @@ import {Collision} from "../framework25/helpers/Collision";
 import {Rectangle} from "../framework25/shapes/Rectangle";
 import {Animation} from "../framework25/Animation";
 import {Bullet} from "./Bullet";
+import {Ship} from "./Ship";
+import {GameStatus} from "./GameStatus";
 
 export class Asteroid extends Rectangle implements iAnimatable {
     private readonly canvas: HTMLCanvasElement;
@@ -15,16 +17,20 @@ export class Asteroid extends Rectangle implements iAnimatable {
     private readonly speed: Vector;
     private readonly acceleration: Vector;
     public shouldBeRemoved: boolean = false;
-    private animation: Animation;
-    private parent: Asteroid;
+    private readonly animation: Animation;
+    private readonly parent: Asteroid;
+    private readonly ship: Ship;
+    private readonly gameStatus: GameStatus;
 
-    constructor(ctx: CanvasRenderingContext2D, canvas: HTMLCanvasElement, animation: Animation, parent: Asteroid = null) {
+    constructor(ctx: CanvasRenderingContext2D, canvas: HTMLCanvasElement, animation: Animation, ship: Ship, gameStatus: GameStatus, parent: Asteroid = null) {
         super(ctx, new Vector({
             x: randomInt(settings.asteroid.size / 2, canvas.width - settings.asteroid.size / 2),
             y: randomInt(settings.asteroid.size / 2, canvas.height - settings.asteroid.size / 2),
         }), settings.asteroid.color, settings.asteroid.size, settings.asteroid.size);
         this.canvas = canvas;
         this.parent = parent;
+        this.gameStatus = gameStatus;
+        this.ship = ship;
         if (this.parent) {
             this.path = new Path2D(settings.asteroid.smallShapes[randomInt(0, settings.asteroid.smallShapes.length - 1)]);
             this.position = new Vector(this.parent.position);
@@ -46,7 +52,10 @@ export class Asteroid extends Rectangle implements iAnimatable {
         this.position.add(this.speed);
         this.rotation += this.speedRotation;
         Collision.replaceOutOfBounds(this, this.canvas);
-        this.checkCollisionWithBullets()
+        if (this.gameStatus.isStarted) {
+            this.checkCollisionWithBullets();
+            this.checkCollisionWithShip();
+        }
         this.draw();
     }
 
@@ -70,13 +79,28 @@ export class Asteroid extends Rectangle implements iAnimatable {
                 if (this.ctx.isPointInPath(this.path, bullet.position.x, bullet.position.y)) {
                     if (this.parent === null) {
                         for (let i = 0; i < settings.asteroid.newAsteroidsCount; i++) {
-                            this.animation.registeriAnimatable(new Asteroid(this.ctx, this.canvas, this.animation, this));
+                            this.animation.registeriAnimatable(new Asteroid(this.ctx, this.canvas, this.animation, this.ship, this.gameStatus, this));
                         }
                     }
                     this.shouldBeRemoved = true;
                 }
             }
         });
+        this.ctx.restore();
+    }
+
+    private checkCollisionWithShip() {
+        this.ctx.save();
+        this.ctx.translate(this.position.x, this.position.y);
+        this.ctx.rotate(this.rotation);
+        this.ctx.translate(-settings.asteroid.size / 2, -settings.asteroid.size / 2);
+        this.ship.points.forEach((point) => {
+            const transformedPoint = Collision.transformPoint(point, this.ship.position, this.ship.rotation);
+            if (this.ctx.isPointInPath(this.path, transformedPoint.x, transformedPoint.y)) {
+                this.animation.stop();
+            }
+        });
+
         this.ctx.restore();
     }
 }
