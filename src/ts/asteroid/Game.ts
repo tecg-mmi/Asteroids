@@ -3,6 +3,7 @@ import {Ship} from "./Ship";
 import {Animation} from "../framework25/Animation";
 import {GameController} from "./GameController";
 import {GameStatus} from "./GameStatus";
+import {Asteroid} from "./Asteroid";
 
 export class Game {
     private readonly canvas: HTMLCanvasElement;
@@ -11,6 +12,7 @@ export class Game {
     private readonly animation: Animation;
     private readonly gameController: GameController;
     private readonly gameStatus: GameStatus;
+    private readonly asteroid: Asteroid;
 
     constructor() {
         this.canvas = document.getElementById(settings.canvas.id) as HTMLCanvasElement;
@@ -20,7 +22,9 @@ export class Game {
         this.gameController = new GameController(this.gameStatus, this.removeText.bind(this));
         this.animation = new Animation(this.canvas, this.ctx);
         this.ship = new Ship(this.ctx, this.canvas, this.gameController);
+        this.asteroid = new Asteroid(this.ctx, this.canvas);
         this.animation.registeriAnimatable(this.ship);
+        this.animation.registeriAnimatable(this.asteroid);
         this.animation.start();
         this.addEventListeners();
     }
