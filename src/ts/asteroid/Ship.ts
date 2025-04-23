@@ -27,15 +27,18 @@ export class Ship extends Triangle implements iAnimatable {
     }
 
     animate(): void {
+        this.update();
+        this.draw();
+    }
+
+
+    private update() {
         this.handleKey();
 
         this.speed.multiply(settings.ship.friction);
         this.position.add(this.speed);
-
         this.checkEdges();
-        this.draw();
     }
-
 
     checkEdges() {
         if (this.position.y > this.canvas.height + settings.ship.height) {

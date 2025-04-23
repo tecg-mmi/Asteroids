@@ -6,7 +6,8 @@ import {Rectangle} from "../framework25/shapes/Rectangle";
 import {Collision} from "../framework25/helpers/Collision";
 import {Animation} from "../framework25/Animation";
 import {Bullet} from "./Bullet";
-import {Rgb} from "../framework25/colors/Rgb";
+import {Ship} from "./Ship";
+import {GameStatus} from "./GameStatus";
 
 export class Asteroid extends Rectangle implements iAnimatable {
     private readonly canvas: HTMLCanvasElement;
@@ -18,22 +19,36 @@ export class Asteroid extends Rectangle implements iAnimatable {
     public shouldBeRemoved: boolean = false;
     private animation: Animation;
     private parent: Asteroid;
+    private ship: Ship;
+    private gameStatus: GameStatus;
 
-    constructor(ctx: CanvasRenderingContext2D, canvas: HTMLCanvasElement, animation: Animation, parent: Asteroid = null) {
+    constructor(ctx: CanvasRenderingContext2D, canvas: HTMLCanvasElement, animation: Animation, ship: Ship, gameStatus: GameStatus, parent: Asteroid = null) {
         super(ctx, new Vector({
             x: randomInt(settings.asteroid.size / 2, canvas.width - settings.asteroid.size / 2),
             y: randomInt(settings.asteroid.size / 2, canvas.height - settings.asteroid.size / 2)
-        }), parent ? Rgb.red : settings.asteroid.color, settings.asteroid.size, settings.asteroid.size, 0);
+        }), settings.asteroid.color, settings.asteroid.size, settings.asteroid.size, 0);
+        this.ship = ship;
         this.canvas = canvas;
-        this.path = new Path2D(settings.asteroid.shapes[randomInt(0, settings.asteroid.shapes.length - 1)]);
-        this.path.closePath();
-        this.direction = randomFloat(0, Math.PI * 2);
-        this.speed = new Vector({x: 0, y: 0});
+        this.parent = parent;
+        this.gameStatus = gameStatus;
+
+        if (this.parent) {
+            this.position = new Vector(this.parent.position);
+            this.speed = new Vector(this.parent.speed);
+            this.direction = this.parent.direction;
+            this.path = new Path2D(settings.asteroid.smallShapes[randomInt(0, settings.asteroid.smallShapes.length - 1)]);
+        } else {
+            this.path = new Path2D(settings.asteroid.shapes[randomInt(0, settings.asteroid.shapes.length - 1)]);
+            this.direction = randomFloat(0, Math.PI * 2);
+            this.speed = new Vector({x: 0, y: 0});
+        }
+
         this.acceleration = Vector.fromAngle(this.direction, randomInt(settings.asteroid.acceleration.min, settings.asteroid.acceleration.max));
         this.speed.add(this.acceleration);
+
+        this.path.closePath();
         this.rotationSpeed = randomFloat(settings.asteroid.rotationSpeed.min, settings.asteroid.rotationSpeed.max);
         this.animation = animation;
-        this.parent = parent;
     }
 
     update() {
@@ -41,6 +56,9 @@ export class Asteroid extends Rectangle implements iAnimatable {
         this.rotation += this.rotationSpeed;
         Collision.replaceOutOfBounds(this, this.canvas);
         this.checkCollisionWithBullet();
+        if (this.gameStatus.isStarted) {
+            this.checkCollisionWithShip();
+        }
     }
 
     private checkCollisionWithBullet() {
@@ -53,7 +71,7 @@ export class Asteroid extends Rectangle implements iAnimatable {
                 if (this.ctx.isPointInPath(this.path, bullet.position.x, bullet.position.y)) {
                     if (this.parent === null) {
                         for (let i = 0; i < settings.asteroid.newAsteroidsCount; i++) {
-                            this.animation.registeriAnimatable(new Asteroid(this.ctx, this.canvas, this.animation, this));
+                            this.animation.registeriAnimatable(new Asteroid(this.ctx, this.canvas, this.animation, this.ship, this.gameStatus, this));
                         }
                         this.shouldBeRemoved = true;
                     } else {
@@ -79,6 +97,21 @@ export class Asteroid extends Rectangle implements iAnimatable {
         this.ctx.translate(-settings.asteroid.size / 2, -settings.asteroid.size / 2);
         this.ctx.strokeStyle = this.color.toString();
         this.ctx.stroke(this.path);
+        this.ctx.restore();
+    }
+
+    private checkCollisionWithShip() {
+        this.ctx.save();
+        this.ctx.translate(this.position.x, this.position.y);
+        this.ctx.rotate(this.rotation);
+        this.ctx.translate(-settings.asteroid.size / 2, -settings.asteroid.size / 2);
+        this.ship.points.forEach(point => {
+            const transformedPoint = Collision.transformPoint(point, this.ship.position, this.ship.rotation);
+            if (this.ctx.isPointInPath(this.path, transformedPoint.x, transformedPoint.y)) {
+                this.animation.stop();
+            }
+
+        })
         this.ctx.restore();
     }
 }
