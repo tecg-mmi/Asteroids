@@ -42,10 +42,9 @@ export class Animation {
         }
 
         if (this.indexOfAnimatableThatShouldBeRemoved.length > settings.maxUnnecessaryAnimatable) {
-            debugger
-            this.indexOfAnimatableThatShouldBeRemoved.forEach((index) => {
-                this.iAnimatables.splice(index, 1);
-            });
+            for (let i = this.indexOfAnimatableThatShouldBeRemoved.length - 1; i >= 0; i--) {
+                this.iAnimatables.splice(this.indexOfAnimatableThatShouldBeRemoved[i], 1);
+            }
             this.indexOfAnimatableThatShouldBeRemoved = [];
         }
 
